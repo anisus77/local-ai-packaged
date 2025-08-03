@@ -1,0 +1,3 @@
+fastapi
+uvicorn
+# kokoro-tts   # Add actual package name when available
