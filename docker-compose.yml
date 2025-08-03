@@ -54,6 +54,27 @@ x-init-ollama: &init-ollama
     - "sleep 3; OLLAMA_HOST=ollama:11434 ollama pull qwen2.5:7b-instruct-q4_K_M; OLLAMA_HOST=ollama:11434 ollama pull nomic-embed-text"
 
 services:
+  kokoro-tts:
+    image: ghcr.io/remsky/kokoro-fastapi-cpu:v0.2.2
+    container_name: kokoro-tts-cpu
+    ports:
+      - "8880:8880"
+    networks:
+      - localai-network
+
+  faster-whisper:
+    build:
+      context: ./faster-whisper-service
+      dockerfile: Dockerfile
+    container_name: faster-whisper-cpu
+    ports:
+      - "5002:5000"
+    networks:
+      - localai-network
+
+networks:
+  localai-network:
+    driver: bridge
   flowise:
     image: flowiseai/flowise
     restart: unless-stopped
