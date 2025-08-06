@@ -64,3 +64,11 @@ services:
   ollama-gpu-amd:
     ports:
       - 127.0.0.1:11434:11434
+      
+  kokoro-tts:
+    ports:
+      - 127.0.0.1:8880:8880
+
+  faster-whisper:
+    ports:
+      - 127.0.0.1:5002:5000
