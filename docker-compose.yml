@@ -76,7 +76,7 @@ services:
       #- DATABASE=odoo_db
       # Or, use Odoo standard variables instead:
       - DB_HOST=odoo-postgres
-      - DB_PORT=5432
+      #- DB_PORT=5432
       - DB_USER=odoo
       - DB_PASSWORD=odoo_password
       - DB_NAME=odoo_db
@@ -91,9 +91,9 @@ services:
     container_name: odoo-postgres
     restart: always
     environment:
-      POSTGRES_USER: odoo
-      POSTGRES_PASSWORD: odoo_password
-      POSTGRES_DB: odoo_db
+      - POSTGRES_USER =odoo
+      - POSTGRES_PASSWORD=odoo_password
+      - POSTGRES_DB=odoo_db
     volumes:
       - odoo-db-data:/var/lib/postgresql/data
     healthcheck:
