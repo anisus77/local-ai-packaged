@@ -39,6 +39,9 @@
 {$NEO4J_HOSTNAME} {
     reverse_proxy neo4j:7474
 }
+odoo.example.com {
+    reverse_proxy odoo:8069
+}
 
 import /etc/caddy/addons/*.conf
 
