@@ -65,22 +65,20 @@ services:
     container_name: odoo
     restart: always
     depends_on:
-      - odoo-postgres
+      odoo-postgres:
+        condition: service_healthy
     ports:
       - "8069:8069"
       - "8072:8072"
     environment:
-      #- HOST=odoo-postgres
-      #- USER=odoo
-      #- PASSWORD=odoo_password
-      #- DATABASE=odoo_db
-      # Or, use Odoo standard variables instead:
+      # Use standard Odoo variables
       - DB_HOST=odoo-postgres
-      #- DB_PORT=5432
+      - DB_PORT=5432
       - DB_USER=odoo
       - DB_PASSWORD=odoo_password
       - DB_NAME=odoo_db
-    command: ["odoo", "-i", "base", "--db_host=odoo-postgres", "--db_user=odoo", "--db_password=odoo_password", "--db_name=odoo_db"]
+      # Force database initialization
+      - INITIALIZE=true
     volumes:
       - odoo-web-data:/var/lib/odoo
       - ./odoo/config:/etc/odoo
@@ -91,13 +89,13 @@ services:
     container_name: odoo-postgres
     restart: always
     environment:
-      - POSTGRES_USER =odoo
+      - POSTGRES_USER=odoo
       - POSTGRES_PASSWORD=odoo_password
-      - POSTGRES_DB=odoo_db
+      # Remove POSTGRES_DB to prevent automatic creation
     volumes:
       - odoo-db-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      test: ["CMD-SHELL", "pg_isready -U odoo -d postgres"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -457,5 +455,4 @@ services:
     container_name: faster-whisper-cpu
     expose:
       - 5000/tcp
-
 
