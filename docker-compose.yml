@@ -80,7 +80,7 @@ services:
       - DB_USER=odoo
       - DB_PASSWORD=odoo_password
       - DB_NAME=odoo_db
-      
+    command: ["odoo", "-i", "base", "--db_host=odoo-postgres", "--db_user=odoo", "--db_password=odoo_password", "--db_name=odoo_db"]
     volumes:
       - odoo-web-data:/var/lib/odoo
       - ./odoo/config:/etc/odoo
