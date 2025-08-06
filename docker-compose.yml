@@ -70,10 +70,16 @@ services:
       - "8069:8069"
       - "8072:8072"
     environment:
-      - HOST=odoo-postgres
-      - USER=odoo
-      - PASSWORD=odoo_password
-      - DATABASE=odoo_db
+      #- HOST=odoo-postgres
+      #- USER=odoo
+      #- PASSWORD=odoo_password
+      #- DATABASE=odoo_db
+      # Or, use Odoo standard variables instead:
+      - DB_HOST=odoo-postgres
+      - DB_PORT=5432
+      - DB_USER=odoo
+      - DB_PASSWORD=odoo_password
+      - DB_NAME=odoo_db
       
     volumes:
       - odoo-web-data:/var/lib/odoo
@@ -89,7 +95,13 @@ services:
       POSTGRES_PASSWORD: odoo_password
       POSTGRES_DB: odoo_db
     volumes:
-      - odoo-db-data:/var/lib/postgresql/data  
+      - odoo-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      
   flowise:
     image: flowiseai/flowise
     restart: unless-stopped
